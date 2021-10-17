@@ -22,3 +22,5 @@ grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/d
 
 grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install marcusolsson-calendar-panel
 grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install cloudflare-app
+grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install grafana-mongodb-datasource
+
