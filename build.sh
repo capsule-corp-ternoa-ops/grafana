@@ -2,10 +2,13 @@
 set -e
 set -x
 
-if [[ -z "${GRAFANA_VERSION}" ]]; then
-  echo "No GRAFANA_VERSION environment variable set"
-  exit 1
-fi
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/grafana/grafana/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
+version=$(get_latest_release)
+GRAFANA_VERSION="${version:1}"
 wget https://dl.grafana.com/oss/release/grafana-$GRAFANA_VERSION.linux-amd64.tar.gz
 tar xvzf grafana-$GRAFANA_VERSION.linux-amd64.tar.gz
 sleep 30
@@ -23,4 +26,3 @@ grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/d
 grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install marcusolsson-calendar-panel
 grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install cloudflare-app
 grafana-$GRAFANA_VERSION/bin/grafana-cli --pluginsDir grafana-$GRAFANA_VERSION/data/plugins plugins install grafana-mongodb-datasource
-
